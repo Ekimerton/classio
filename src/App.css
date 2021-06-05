@@ -39,7 +39,17 @@
 .App-horizontal-scroll {
   display: flex;
   padding-bottom: 10px;
-  min-height: 150px;
+  min-height: 140px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.App-horizontal-empty {
+  display: flex;
+  padding-bottom: 10px;
+  min-height: 140px;
+  align-items: center;
+  justify-content: center;
   flex-wrap: nowrap;
   overflow-x: auto;
 }

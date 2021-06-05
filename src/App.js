@@ -1,10 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import 'antd/dist/antd.css';
 import { AutoComplete, Input, Typography, Button } from 'antd';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ClassCard from './components/ClassCard';
+import { generateSets, cartesianProduct } from './utils/timetableGen';
 
 const { Paragraph, Text, Title } = Typography;
 
@@ -15,6 +15,7 @@ function App() {
 	const [searchValue, setSearchValue] = useState("");
 	const [selectedClasses, setSelectedClasses] = useState([]);
 	const [courseInfos, setCourseInfos] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	const onAddCourse = (courseInfo) => {
 		const newCourseInfos = [...courseInfos];
@@ -35,13 +36,15 @@ function App() {
 			})
 
 			setAutoCompleteOptions(course_options)
+			setLoading(false);
 		}
+		setLoading(true);
 		loadAutocomplete();
 	}, []);
 
 	const onSelectCourse = (courseCode) => {
 		const newSelectedClasses = [...selectedClasses]
-		newSelectedClasses.push(courseCode);
+		newSelectedClasses.unshift(courseCode);
 		setSelectedClasses(newSelectedClasses);
 		setSearchValue("");
 	}
@@ -56,13 +59,18 @@ function App() {
 		setCourseInfos(newCourseInfos);
 	}
 
+	const handleGenerate = () => {
+		const sets = generateSets(courseInfos);
+		console.log(cartesianProduct(sets));
+	}
+
 	return (
 		<div className="App">
 			<header className="App-header">
 				<div style={{ maxWidth: "100%", width: 800, padding: 10 }}>
 					<div className="App-section" style={{ textAlign: "center" }}>
 						<Title>Classio</Title>
-						<Text>A better take on class selection.</Text>
+						<Text>A better take on class selection. Put some content here ashasdhalsdha</Text>
 					</div>
 					<div className="App-section">
 						<AutoComplete
@@ -78,15 +86,15 @@ function App() {
 								option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
 							}
 						>
-							<Input size="large" placeholder="input here" />
+							<Input size="large" placeholder={loading ? "Loading courses..." : "Enter course code"} />
 						</AutoComplete>
-						<Paragraph>Selected {courseInfos.length} classes</Paragraph>
+						<Paragraph>Selected <b>{courseInfos.length}</b> course(s)</Paragraph>
 						<div className="App-horizontal-scroll">
 							{selectedClasses.map((code) => (
-								<ClassCard onDelete={onDeleteCourse} code={code} onAdd={onAddCourse} />
+								<ClassCard key={code} onDelete={onDeleteCourse} code={code} onAdd={onAddCourse} />
 							))}
 						</div>
-						<Button type="primary" block size="large" disabled={courseInfos.length === 0} onClick={() => { console.log(courseInfos) }}>
+						<Button style={{ marginTop: 10 }} type="primary" block size="large" disabled={courseInfos.length === 0} onClick={handleGenerate}>
 							Generate Timetables
     					</Button>
 					</div>
