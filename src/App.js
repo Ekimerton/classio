@@ -1,13 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 import 'antd/dist/antd.css';
-import { AutoComplete, Input, Typography, Row, Col, Card, List } from 'antd';
+import { AutoComplete, Input, Typography, Button } from 'antd';
 import axios from 'axios';
-import { DeleteOutlined, ExportOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
+import ClassCard from './components/ClassCard';
 
 const { Paragraph, Text, Title } = Typography;
-const { Meta } = Card;
 
 
 function App() {
@@ -15,6 +14,13 @@ function App() {
 	const [autocompleteOptions, setAutoCompleteOptions] = useState([]);
 	const [searchValue, setSearchValue] = useState("");
 	const [selectedClasses, setSelectedClasses] = useState([]);
+	const [courseInfos, setCourseInfos] = useState([]);
+
+	const onAddCourse = (courseInfo) => {
+		const newCourseInfos = [...courseInfos];
+		newCourseInfos.push(courseInfo);
+		setCourseInfos(newCourseInfos);
+	}
 
 	useEffect(() => {
 		const loadAutocomplete = async () => {
@@ -42,9 +48,12 @@ function App() {
 
 	const onDeleteCourse = (courseCode) => {
 		const newSelectedClasses = [...selectedClasses];
+		const newCourseInfos = [...courseInfos];
 		const index = newSelectedClasses.indexOf(courseCode);
 		newSelectedClasses.splice(index, 1);
+		newCourseInfos.splice(index, 1);
 		setSelectedClasses(newSelectedClasses);
+		setCourseInfos(newCourseInfos);
 	}
 
 	return (
@@ -71,17 +80,15 @@ function App() {
 						>
 							<Input size="large" placeholder="input here" />
 						</AutoComplete>
-						<Paragraph>Selected {selectedClasses.length} classes</Paragraph>
+						<Paragraph>Selected {courseInfos.length} classes</Paragraph>
 						<div className="App-horizontal-scroll">
 							{selectedClasses.map((code) => (
-								<Card size="small" bordered={false} title={code} className="App-class-card" style={{ marginRight: 10 }} extra={<a onClick={onDeleteCourse}>X</a>}>
-									<Meta
-										title={"Intro to sucking ass"}
-										description={"Found 7 sections"}
-									/>
-								</Card>
+								<ClassCard onDelete={onDeleteCourse} code={code} onAdd={onAddCourse} />
 							))}
 						</div>
+						<Button type="primary" block size="large" disabled={courseInfos.length === 0} onClick={() => { console.log(courseInfos) }}>
+							Generate Timetables
+    					</Button>
 					</div>
 				</div>
 			</header>

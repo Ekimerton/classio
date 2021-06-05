@@ -38,6 +38,8 @@
 
 .App-horizontal-scroll {
   display: flex;
+  padding-bottom: 10px;
+  min-height: 150px;
   flex-wrap: nowrap;
   overflow-x: auto;
 }
