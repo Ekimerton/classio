@@ -1,21 +1,28 @@
 import './App.css';
 import 'antd/dist/antd.css';
-import { AutoComplete, Input, Typography, Button } from 'antd';
+import { AutoComplete, Input, Typography, Button, Select, Steps, List } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ClassCard from './components/ClassCard';
-import { generateSets, cartesianProduct } from './utils/timetableGen';
+import { generateSets, cartesianProduct, generateTimetables, generateScores } from './utils/timetableGen';
 
 const { Paragraph, Text, Title } = Typography;
+const { Step } = Steps;
+const { Option } = Select;
 
 
 function App() {
 
 	const [autocompleteOptions, setAutoCompleteOptions] = useState([]);
 	const [searchValue, setSearchValue] = useState("");
+	const [semester, setSemester] = useState("2021 Fall");
 	const [selectedClasses, setSelectedClasses] = useState([]);
 	const [courseInfos, setCourseInfos] = useState([]);
 	const [loading, setLoading] = useState(false);
+
+	const [step, setStep] = useState(-1);
+	const [timetables, setTimetables] = useState([]);
 
 	const onAddCourse = (courseInfo) => {
 		const newCourseInfos = [...courseInfos];
@@ -27,11 +34,11 @@ function App() {
 		const loadAutocomplete = async () => {
 			const res = await axios.get(
 				'https://classio-api.herokuapp.com/course',
-				{ params: { semester: "2021 Winter" } }
+				{ params: { semester: semester } }
 			);
 			const course_codes = res.data.course_codes;
 			const course_options = [];
-			course_codes.map(course_code => {
+			course_codes.forEach(course_code => {
 				course_options.push({ 'value': course_code })
 			})
 
@@ -40,16 +47,16 @@ function App() {
 		}
 		setLoading(true);
 		loadAutocomplete();
-	}, []);
+	}, [semester]);
 
-	const onSelectCourse = (courseCode) => {
+	const handleSelectCourse = (courseCode) => {
 		const newSelectedClasses = [...selectedClasses]
 		newSelectedClasses.unshift(courseCode);
 		setSelectedClasses(newSelectedClasses);
 		setSearchValue("");
 	}
 
-	const onDeleteCourse = (courseCode) => {
+	const handleDeleteCourse = (courseCode) => {
 		const newSelectedClasses = [...selectedClasses];
 		const newCourseInfos = [...courseInfos];
 		const index = newSelectedClasses.indexOf(courseCode);
@@ -59,9 +66,27 @@ function App() {
 		setCourseInfos(newCourseInfos);
 	}
 
+
+	const handleSelectSemester = (newSemester) => {
+		setStep(-1);
+		setSemester(newSemester);
+		setSearchValue("");
+		setSelectedClasses([]);
+		setCourseInfos([]);
+	}
+
 	const handleGenerate = () => {
+		setTimetables([]);
+		setStep(0);
 		const sets = generateSets(courseInfos);
-		console.log(cartesianProduct(sets));
+		setStep(1);
+		const products = cartesianProduct(sets);
+		const timetables = generateTimetables(products);
+		setTimetables(timetables);
+		setStep(2);
+		const scoredTimetables = generateScores(timetables);
+		console.log(scoredTimetables);
+		setStep(3);
 	}
 
 	return (
@@ -73,30 +98,44 @@ function App() {
 						<Text>A better take on class selection. Put some content here ashasdhalsdha</Text>
 					</div>
 					<div className="App-section">
-						<AutoComplete
-							allowClear
-							value={searchValue}
-							dropdownMatchSelectWidth={300}
-							options={autocompleteOptions}
-							style={{ width: "100%", marginBottom: 20 }}
-							onSelect={(courseCode) => { onSelectCourse(courseCode) }}
-							onSearch={() => { }}
-							onChange={setSearchValue}
-							filterOption={(inputValue, option) =>
-								option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-							}
-						>
-							<Input size="large" placeholder={loading ? "Loading courses..." : "Enter course code"} />
-						</AutoComplete>
+						<div style={{ flex: 1, flexDirection: "row", justifyContent: 'space-around', alignItems: 'center', marginBottom: 20, display: "flex" }}>
+							<Select defaultValue="2021 Fall" size="large" style={{ flex: 0.3, marginRight: 10 }} onChange={newSemester => handleSelectSemester(newSemester)}>
+								<Option value="2021 Fall">Fall 2021</Option>
+								<Option value="2021 Winter">Winter 2021</Option>
+							</Select>
+							<AutoComplete
+								allowClear
+								value={searchValue}
+								options={autocompleteOptions}
+								loading={loading}
+								style={{ flex: 1 }}
+								onSelect={(courseCode) => { handleSelectCourse(courseCode) }}
+								onSearch={() => { }}
+								onChange={setSearchValue}
+								filterOption={(inputValue, option) =>
+									option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+								}
+							>
+								<Input size="large" placeholder={loading ? "Loading courses..." : "Enter course code"} disabled={loading} />
+							</AutoComplete>
+						</div>
 						<Paragraph>Selected <b>{courseInfos.length}</b> course(s)</Paragraph>
 						<div className="App-horizontal-scroll">
 							{selectedClasses.map((code) => (
-								<ClassCard key={code} onDelete={onDeleteCourse} code={code} onAdd={onAddCourse} />
+								<ClassCard key={code} onDelete={handleDeleteCourse} code={code} onAdd={onAddCourse} semester={semester} />
 							))}
 						</div>
 						<Button style={{ marginTop: 10 }} type="primary" block size="large" disabled={courseInfos.length === 0} onClick={handleGenerate}>
 							Generate Timetables
     					</Button>
+					</div>
+					<div className="App-section" style={{ textAlign: "center" }}>
+						<Steps size="small" current={step}>
+							<Step title="Parsing" icon={step === 0 && <LoadingOutlined />} />
+							<Step title="Generating" icon={step === 1 && <LoadingOutlined />} />
+							<Step title="Scoring" icon={step === 2 && <LoadingOutlined />} />
+						</Steps>
+						<Title>{timetables.length}</Title>
 					</div>
 				</div>
 			</header>

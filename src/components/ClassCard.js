@@ -9,13 +9,13 @@ export default function ClassCard(props) {
     const [name, setName] = useState("");
     const [sectionCount, setSectionCount] = useState(0);
 
-    const { code, onDelete, onAdd } = props;
+    const { code, onDelete, onAdd, semester } = props;
 
     useEffect(() => {
         const loadInfo = async () => {
             const res = await axios.get(
                 `https://classio-api.herokuapp.com/course/${code}`,
-                { params: { semester: "2021 Winter" } }
+                { params: { semester: semester } }
             );
             setName(res.data.course_info.name);
             setSectionCount(res.data.course_info.sections.length);
@@ -24,7 +24,7 @@ export default function ClassCard(props) {
         }
         setLoading(true);
         loadInfo();
-    }, [code]);
+    }, [code, semester]);
 
     return (
         <Card
