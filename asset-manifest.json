@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/classio-react/static/css/main.6669ab55.chunk.css",
+    "main.css": "/classio-react/static/css/main.c8839a24.chunk.css",
     "main.js": "/classio-react/static/js/main.bd25ba28.chunk.js",
     "main.js.map": "/classio-react/static/js/main.bd25ba28.chunk.js.map",
     "runtime-main.js": "/classio-react/static/js/runtime-main.89f09c52.js",
@@ -12,14 +12,14 @@
     "static/js/3.364f31c6.chunk.js.map": "/classio-react/static/js/3.364f31c6.chunk.js.map",
     "index.html": "/classio-react/index.html",
     "static/css/2.3089e125.chunk.css.map": "/classio-react/static/css/2.3089e125.chunk.css.map",
-    "static/css/main.6669ab55.chunk.css.map": "/classio-react/static/css/main.6669ab55.chunk.css.map",
+    "static/css/main.c8839a24.chunk.css.map": "/classio-react/static/css/main.c8839a24.chunk.css.map",
     "static/js/2.d5f68866.chunk.js.LICENSE.txt": "/classio-react/static/js/2.d5f68866.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.89f09c52.js",
     "static/css/2.3089e125.chunk.css",
     "static/js/2.d5f68866.chunk.js",
-    "static/css/main.6669ab55.chunk.css",
+    "static/css/main.c8839a24.chunk.css",
     "static/js/main.bd25ba28.chunk.js"
   ]
 }
