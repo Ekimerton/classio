@@ -1,6 +1,7 @@
 {
   "name": "classio-react",
   "version": "0.1.0",
+  "homepage": "http://ekimerton.github.io/classio",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -9,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.16.0",
     "axios": "^0.21.1",
+    "gh-pages": "^3.2.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -19,7 +21,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
