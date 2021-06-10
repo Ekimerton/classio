@@ -1,6 +1,6 @@
 import './App.css';
 import 'antd/dist/antd.css';
-import { AutoComplete, Input, Typography, Button, Select, Steps, List } from 'antd';
+import { AutoComplete, Input, Typography, Button, Select, Steps, List, message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -51,6 +51,10 @@ function App() {
 	}, [semester]);
 
 	const handleSelectCourse = (courseCode) => {
+		if (selectedClasses.includes(courseCode)) {
+			message.error("You can't select the same class twice!");
+			return
+		}
 		const newSelectedClasses = [...selectedClasses]
 		newSelectedClasses.unshift(courseCode);
 		setSelectedClasses(newSelectedClasses);
