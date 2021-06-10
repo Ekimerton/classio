@@ -5,6 +5,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ClassCard from './components/ClassCard';
+import TimetableCalendar from './components/TimetableCalendar';
 import { generateSets, cartesianProduct, generateTimetables, generateScores } from './utils/timetableGen';
 
 const { Paragraph, Text, Title } = Typography;
@@ -26,7 +27,7 @@ function App() {
 
 	const onAddCourse = (courseInfo) => {
 		const newCourseInfos = [...courseInfos];
-		newCourseInfos.push(courseInfo);
+		newCourseInfos.unshift(courseInfo);
 		setCourseInfos(newCourseInfos);
 	}
 
@@ -73,6 +74,7 @@ function App() {
 		setSearchValue("");
 		setSelectedClasses([]);
 		setCourseInfos([]);
+		setTimetables([]);
 	}
 
 	const handleGenerate = () => {
@@ -82,10 +84,9 @@ function App() {
 		setStep(1);
 		const products = cartesianProduct(sets);
 		const timetables = generateTimetables(products);
-		setTimetables(timetables);
 		setStep(2);
 		const scoredTimetables = generateScores(timetables);
-		console.log(scoredTimetables);
+		setTimetables(scoredTimetables);
 		setStep(3);
 	}
 
@@ -135,7 +136,26 @@ function App() {
 							<Step title="Generating" icon={step === 1 && <LoadingOutlined />} />
 							<Step title="Scoring" icon={step === 2 && <LoadingOutlined />} />
 						</Steps>
-						<Title>{timetables.length}</Title>
+						<List
+							itemLayout="vertical"
+							size="large"
+							pagination={{
+								onChange: page => {
+									console.log(page);
+								},
+								pageSize: 10,
+							}}
+							style={{ padding: 0 }}
+							dataSource={timetables}
+							renderItem={item => (
+								<List.Item
+									style={{ paddingLeft: 0, paddingRight: 0 }}
+									key={item.title}
+								>
+									<TimetableCalendar timetable={item} />
+								</List.Item>
+							)}
+						/>,
 					</div>
 				</div>
 			</header>

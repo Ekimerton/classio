@@ -36,4 +36,11 @@ export const generateTimetables = (combinations) => {
 };
 
 
-export const generateScores = (timetables) => { return timetables }
+export const generateScores = (timetables) => {
+    return timetables.map((timetable) => {
+        return {
+            scores: { total: 10 },
+            timetable
+        }
+    })
+}
