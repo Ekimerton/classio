@@ -39,7 +39,7 @@ export const generateTimetables = (combinations) => {
 export const generateScores = (timetables) => {
     return timetables.map((timetable) => {
         return {
-            scores: { total: 10 },
+            scores: { total: 8, lunch: 3, dinner: 4, offTime: 8 },
             timetable
         }
     })

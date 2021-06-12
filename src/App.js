@@ -5,7 +5,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ClassCard from './components/ClassCard';
-import TimetableCalendar from './components/TimetableCalendar';
+import Timetable from './components/Timetable';
 import { generateSets, cartesianProduct, generateTimetables, generateScores } from './utils/timetableGen';
 
 const { Paragraph, Text, Title } = Typography;
@@ -99,7 +99,7 @@ function App() {
 			<header className="App-header">
 				<div style={{ maxWidth: "100%", width: 800, padding: 10 }}>
 					<div className="App-section" style={{ textAlign: "center" }}>
-						<Title>Classio</Title>
+						<Title>classio • Queen's University</Title>
 						<Text>A better take on class selection. Put some content here ashasdhalsdha</Text>
 					</div>
 					<div className="App-section">
@@ -110,6 +110,7 @@ function App() {
 							</Select>
 							<AutoComplete
 								allowClear
+								disabled={loading}
 								value={searchValue}
 								options={autocompleteOptions}
 								loading={loading}
@@ -156,7 +157,7 @@ function App() {
 									style={{ paddingLeft: 0, paddingRight: 0 }}
 									key={item.title}
 								>
-									<TimetableCalendar timetable={item} />
+									<Timetable timetable={item} />
 								</List.Item>
 							)}
 						/>,

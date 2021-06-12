@@ -1,37 +1,46 @@
 import { Typography, Card, Row, Col } from 'antd';
 
-const { Paragraph, Text, Title } = Typography
+const { Title } = Typography
 
 export default function TimetableCalendar(props) {
-    const { timetable } = props;
+    const { timeslots } = props;
 
     return (
         <Card
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%' }}
             bodyStyle={{ padding: 0 }}
             size="small"
-            bordered={false}
         >
-            <Row justify="center" style={{ margin: 0 }}>
-                <Col style={{ width: "20%", justifyContent: "center", alignItems: "center" }}>
+            <Row justify="center" style={{ margin: 0, paddingTop: 10 }}>
+                <Col className="Timetable-column" >
                     <Title level={5}>Monday</Title>
-                    <Text>Times go here</Text>
+                    {timeslots['Mo'].map((timeslot) => {
+                        return <p>{`${timeslot.start_time} - ${timeslot.end_time}`}</p>
+                    })}
                 </Col>
-                <Col style={{ width: "20%", backgroundColor: "#aaa", justifyContent: "center", alignItems: "center" }}>
+                <Col className="Timetable-column" >
                     <Title level={5}>Tuesday</Title>
-                    <Text>Times go here</Text>
+                    {timeslots['Tu'].map((timeslot) => {
+                        return <p>{`${timeslot.start_time} - ${timeslot.end_time}`}</p>
+                    })}
                 </Col>
-                <Col style={{ width: "20%", backgroundColor: "#888", justifyContent: "center", alignItems: "center" }}>
+                <Col className="Timetable-column" >
                     <Title level={5}>Wednesday</Title>
-                    <Text>Times go here</Text>
+                    {timeslots['We'].map((timeslot) => {
+                        return <p>{`${timeslot.start_time} - ${timeslot.end_time}`}</p>
+                    })}
                 </Col>
-                <Col style={{ width: "20%", backgroundColor: "#aaa", justifyContent: "center", alignItems: "center" }}>
+                <Col className="Timetable-column" >
                     <Title level={5}>Thursday</Title>
-                    <Text>Times go here</Text>
+                    {timeslots['Th'].map((timeslot) => {
+                        return <p>{`${timeslot.start_time} - ${timeslot.end_time}`}</p>
+                    })}
                 </Col>
-                <Col style={{ width: "20%", backgroundColor: "#888", justifyContent: "center", alignItems: "center" }}>
+                <Col className="Timetable-column" >
                     <Title level={5}>Friday</Title>
-                    <Text>Times go here</Text>
+                    {timeslots['Fr'].map((timeslot) => {
+                        return <p>{`${timeslot.start_time} - ${timeslot.end_time}`}</p>
+                    })}
                 </Col>
             </Row>
         </Card>
