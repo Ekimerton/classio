@@ -20,11 +20,11 @@ export default function Timetable(props) {
                         <Tag color="blue">Time wasted: {scores.offTime}h</Tag>
                     </div>
                 }
-                style={{ padding: 0, margin: 0, justifyContent: "flex-start", alignItems: "flex-start" }}
+                style={{ padding: 0, margin: 0, justifyContent: "flex-start", alignItems: "flex-start", backgroundColor: "#ffffff" }}
                 key="1"
                 showArrow={false}
             >
-                <TimetableCalendar timeslots={timetable.timetable} />
+                <TimetableCalendar timeslots={timeslots} />
             </Panel>
         </Collapse >
     )

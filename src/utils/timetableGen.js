@@ -20,6 +20,10 @@ export const cartesianProduct = (sets, n = 0, result = [], current = []) => {
     return result
 };
 
+const validateDay = (day) => {
+    return true;
+}
+
 const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr'];
 // Flattens timeslots and checks for any conflicts
 export const generateTimetables = (combinations) => {
@@ -27,10 +31,15 @@ export const generateTimetables = (combinations) => {
     for (const combination of combinations) {
         const timeslots = _.flatMap(combination, set => set.timeslots)
         var days = _.groupBy(timeslots, timeslot => timeslot.day)
-        for (const day of weekdays) {
-            days[day] = _.sortBy(days[day], 'start_time');
+        var valid = true;
+        for (const weekday of weekdays) {
+            days[weekday] = _.sortBy(days[weekday], 'start_time');
+            valid = valid && validateDay(days[weekday]);
+            if (!valid) {
+                break;
+            }
         }
-        timetables.push(days);
+        valid && timetables.push(days);
     }
     return timetables;
 };
