@@ -1,6 +1,6 @@
 import './App.css';
 import 'antd/dist/antd.css';
-import { AutoComplete, Input, Typography, Button, Select, Steps, List, message } from 'antd';
+import { AutoComplete, Input, Typography, Button, Select, Steps, List, Divider, message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -99,7 +99,7 @@ function App() {
 			<header className="App-header">
 				<div style={{ maxWidth: "100%", width: 800, padding: 10 }}>
 					<div className="App-section" style={{ textAlign: "center" }}>
-						<Title>classio • Queen's University</Title>
+						<Title>classio</Title>
 						<Text>A better take on class selection. Put some content here ashasdhalsdha</Text>
 					</div>
 					<div className="App-section">
@@ -141,6 +141,7 @@ function App() {
 							<Step title="Generating" icon={step === 1 && <LoadingOutlined />} />
 							<Step title="Scoring" icon={step === 2 && <LoadingOutlined />} />
 						</Steps>
+						<Divider plain>Showing {timetables.length} option(s)</Divider>
 						<List
 							itemLayout="vertical"
 							size="large"

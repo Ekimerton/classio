@@ -21,6 +21,17 @@ export const cartesianProduct = (sets, n = 0, result = [], current = []) => {
 };
 
 const validateDay = (day) => {
+    if (day.length === 0 || day.length === 1) {
+        return true;
+    }
+    var prevDay = day[0];
+    for (var i = 1; i < day.length; i++) {
+        const currDay = day[i];
+        if (currDay.start_time < prevDay.end_time) {
+            return false;
+        }
+        prevDay = currDay;
+    }
     return true;
 }
 
@@ -35,11 +46,9 @@ export const generateTimetables = (combinations) => {
         for (const weekday of weekdays) {
             days[weekday] = _.sortBy(days[weekday], 'start_time');
             valid = valid && validateDay(days[weekday]);
-            if (!valid) {
-                break;
-            }
+            if (!valid) { break; };
         }
-        valid && timetables.push(days);
+        if (valid) { timetables.push(days); };
     }
     return timetables;
 };

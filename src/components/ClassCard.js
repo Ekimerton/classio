@@ -38,7 +38,6 @@ export default function ClassCard(props) {
     return (
         <Card
             size="small"
-            bordered={false}
             title={code}
             loading={loading}
             className="App-class-card"
