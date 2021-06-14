@@ -25,7 +25,6 @@ export default function ClassCard(props) {
                 { params: { semester: semester } }
             );
             setName(res.data.course_info.name);
-            console.log(res.data.course_info.sections);
             const timeslots = _.flatMap(res.data.course_info.sections, 'timeslots')
             setTimeslotCount(timeslots.length);
             onAdd(res.data.course_info);
@@ -38,6 +37,7 @@ export default function ClassCard(props) {
     return (
         <Card
             size="small"
+            bordered={false}
             title={code}
             loading={loading}
             className="App-class-card"

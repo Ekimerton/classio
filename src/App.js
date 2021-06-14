@@ -6,6 +6,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ClassCard from './components/ClassCard';
 import Timetable from './components/Timetable';
+import _ from 'lodash';
 import { generateSets, cartesianProduct, generateTimetables, generateScores } from './utils/timetableGen';
 
 const { Paragraph, Text, Title } = Typography;
@@ -90,7 +91,8 @@ function App() {
 		const timetables = generateTimetables(products);
 		setStep(2);
 		const scoredTimetables = generateScores(timetables);
-		setTimetables(scoredTimetables);
+		const sortedTimetables = _.sortBy(scoredTimetables, timetable => timetable.scores.total).reverse()
+		setTimetables(sortedTimetables);
 		setStep(3);
 	}
 

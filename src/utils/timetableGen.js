@@ -1,4 +1,6 @@
+
 import _ from 'lodash';
+import moment from 'moment';
 
 // Groups sections of the same class and type into a single sets, returns all unique sets generated
 export const generateSets = (courses) => {
@@ -20,20 +22,6 @@ export const cartesianProduct = (sets, n = 0, result = [], current = []) => {
     return result
 };
 
-const validateDay = (day) => {
-    if (day.length === 0 || day.length === 1) {
-        return true;
-    }
-    var prevDay = day[0];
-    for (var i = 1; i < day.length; i++) {
-        const currDay = day[i];
-        if (currDay.start_time < prevDay.end_time) {
-            return false;
-        }
-        prevDay = currDay;
-    }
-    return true;
-}
 
 const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr'];
 // Flattens timeslots and checks for any conflicts
@@ -53,12 +41,105 @@ export const generateTimetables = (combinations) => {
     return timetables;
 };
 
-
+const lunchTime = { start_time: "11:30", end_time: "12:30" };
+const dinnerTime = { start_time: "18:30", end_time: "19:30" };
 export const generateScores = (timetables) => {
     return timetables.map((timetable) => {
+        const scores = { total: 0, lunch: 0, dinner: 0, offTime: 0, type: "late" }
+        for (const day of Object.values(timetable)) {
+            scores['offTime'] += calculateOfftime(day);
+            scores['lunch'] += checkAvailability(day, lunchTime) ? 1 : 0;
+            scores['dinner'] += checkAvailability(day, dinnerTime) ? 1 : 0;
+        }
+        scores['type'] = calculateTimeType(timetable);
+        scores['total'] = 10 - (5 - scores['lunch']) - (5 - scores['dinner']) - Math.round(scores['offTime'])
         return {
-            scores: { total: 8, lunch: 3, dinner: 4, offTime: 8 },
+            scores,
             timetable
         }
     })
+}
+
+const validateDay = (day) => {
+    if (day.length === 0 || day.length === 1) {
+        return true;
+    }
+    for (var i = 1; i < day.length; i++) {
+        const prevTime = day[i - 1];
+        const currTime = day[i];
+        if (currTime.start_time < prevTime.end_time) {
+            return false;
+        }
+    }
+    return true;
+}
+
+const calculateTimeType = (timetable) => {
+    const types = { 'Early': 0, 'Mid-Day': 0, 'Late': 0 };
+    for (const day of Object.values(timetable)) {
+        for (const timeslot of day) {
+            if (timeslot.start_time < "10:30") {
+                types['Early']++;
+            } else if (timeslot.start_time < "3:30") {
+                types['Mid-Day']++;
+            } else {
+                types['Late']++;
+            }
+        }
+    }
+    const max = Object.entries(types).reduce((a, b) => a[1] > b[1] ? a : b)[0];
+    return max;
+}
+
+const calculateOfftime = (day) => {
+    if (day.length === 0 || day.length === 1) {
+        return 0;
+    }
+    var sum = 0;
+    for (var i = 1; i < day.length; i++) {
+        const prevTime = day[i - 1];
+        const currTime = day[i];
+        const prevMoment = moment(prevTime.end_time, moment.HTML5_FMT.TIME);
+        const currMoment = moment(currTime.start_time, moment.HTML5_FMT.TIME);
+        const duration = moment.duration(currMoment.diff(prevMoment));
+        const hours = duration.asHours();
+        sum += hours;
+    }
+    return sum;
+}
+
+const checkAvailability = (day, target) => {
+    if (day.length === 0) {
+        return true;
+    }
+
+    if (day.length === 1) {
+        return !(target.end_time > day[0].start_time && day[0].end_time > target.start_time)
+    }
+
+    var left = 0;
+    var right = day.length - 1;
+    var mid;
+    while (true) {
+        mid = Math.floor((right + left) / 2);
+        if (day[mid].end_time === target.start_time) {
+            mid++;
+            break;
+        }
+        if (day[mid].end_time > target.start_time) {
+            right = mid - 1;
+            if (left > right) {
+                break;
+            }
+        } else {
+            left = mid + 1;
+            if (left > right) {
+                mid++;
+                break;
+            }
+        }
+    }
+
+    if (mid === day.length) { return true };
+    return target.end_time <= day[mid].start_time
 }
