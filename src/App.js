@@ -157,8 +157,8 @@ function App() {
 							dataSource={timetables}
 							renderItem={item => (
 								<List.Item
+									key={Math.floor(Math.random() * 10000)}
 									style={{ paddingLeft: 0, paddingRight: 0 }}
-									key={item.title}
 								>
 									<Timetable timetable={item} />
 								</List.Item>
