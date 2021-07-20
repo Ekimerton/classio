@@ -28,6 +28,7 @@ const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr'];
 export const generateTimetables = (combinations) => {
     var timetables = [];
     for (const combination of combinations) {
+        const classes = _.flatMap(combination, set => ({ courseCode: set.course_code, kind: set.kind, code: set.code }));
         const timeslots = _.flatMap(combination, set => set.timeslots)
         var days = _.groupBy(timeslots, timeslot => timeslot.day)
         var valid = true;
@@ -36,7 +37,12 @@ export const generateTimetables = (combinations) => {
             valid = valid && validateDay(days[weekday]);
             if (!valid) { break; };
         }
-        if (valid) { timetables.push(days); };
+        if (valid) {
+            timetables.push({
+                classes,
+                days
+            });
+        };
     }
     return timetables;
 };
@@ -46,16 +52,17 @@ const dinnerTime = { start_time: "18:30", end_time: "19:30" };
 export const generateScores = (timetables) => {
     return timetables.map((timetable) => {
         const scores = { total: 0, lunch: 0, dinner: 0, offTime: 0, type: "late" }
-        for (const day of Object.values(timetable)) {
+        for (const day of Object.values(timetable['days'])) {
             scores['offTime'] += calculateOfftime(day);
             scores['lunch'] += checkAvailability(day, lunchTime) ? 1 : 0;
             scores['dinner'] += checkAvailability(day, dinnerTime) ? 1 : 0;
         }
-        scores['type'] = calculateTimeType(timetable);
+        scores['type'] = calculateTimeType(timetable['days']);
         scores['total'] = 10 - (5 - scores['lunch']) - (5 - scores['dinner']) - Math.round(scores['offTime'])
         return {
-            scores,
-            timetable
+            classes: timetable['classes'],
+            timetable: timetable['days'],
+            scores
         }
     })
 }

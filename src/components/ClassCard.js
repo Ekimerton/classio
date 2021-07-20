@@ -51,7 +51,6 @@ export default function ClassCard(props) {
                         <Text>{`Found ${timeslotCount} timeslot(s)`}</Text>
                         {timeslotCount === 0 &&
                             <Popover content={content} title="Why are there no timeslots?">
-
                                 <a> ? </a>
                             </Popover>
                         }

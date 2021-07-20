@@ -9,7 +9,7 @@ import Timetable from './components/Timetable';
 import _ from 'lodash';
 import { generateSets, cartesianProduct, generateTimetables, generateScores } from './utils/timetableGen';
 
-const { Paragraph, Text, Title, Link } = Typography;
+const { Paragraph, Title, Link } = Typography;
 const { Step } = Steps;
 const { Option } = Select;
 
@@ -53,7 +53,7 @@ function App() {
 
 	const handleSelectCourse = (courseCode) => {
 		if (selectedClasses.includes(courseCode)) {
-			message.error("You can't select the same class twice!");
+			message.warning("You can't select the same class twice!");
 			return
 		}
 		const newSelectedClasses = [...selectedClasses]
@@ -92,6 +92,11 @@ function App() {
 		setStep(2);
 		const scoredTimetables = generateScores(timetables);
 		const sortedTimetables = _.sortBy(scoredTimetables, timetable => timetable.scores.total).reverse()
+		if (sortedTimetables.length === 0) {
+			message.error("Unable to generate timetables due to a time conflict!");
+		} else {
+			message.success(`Finished generating ${sortedTimetables.length} timetable(s)!`)
+		}
 		setTimetables(sortedTimetables);
 		setStep(3);
 	}
@@ -113,7 +118,7 @@ function App() {
 							conflicts, and ranks them for convenience.
 						</Paragraph>
 						<Paragraph >
-							All of the course information used within this project comes from my <Link href="https://classio-api.herokuapp.com" target="_blank">open-source api</Link>. If you have a keen eye for code, or are looking to get into coding, I would recommend giving it a shot in your next project!
+							All of the course information used within this project comes from my <Link href="https://classio-api.herokuapp.com" target="_blank">open-source api</Link>. If you have a keen eye for code or are looking to get into coding, I would recommend giving it a shot in your next project!
 						</Paragraph>
 						<Divider />
 						<Paragraph ellipsis={{ rows: 2, expandable: true, symbol: 'more' }}>
@@ -121,7 +126,9 @@ function App() {
 							<br /><br />
 							Best wishes,
 							<br /><br />
-							Ekim <Link href="https://www.linkedin.com/in/ekim-karabey/" target="_blank">(LinkedIn)</Link>
+							Ekim
+							<Link href="https://www.linkedin.com/in/ekim-karabey/" target="_blank"> (LinkedIn)</Link>
+							<Link href="https://github.com/Ekimerton" target="_blank"> (Github)</Link>
 						</Paragraph>
 					</div>
 					<div className="App-section">
@@ -155,7 +162,7 @@ function App() {
 						</div>
 						<Button style={{ marginTop: 10 }} type="primary" block size="large" disabled={courseInfos.length === 0} onClick={handleGenerate}>
 							Generate Timetables
-    					</Button>
+						</Button>
 					</div>
 					<div className="App-section" style={{ textAlign: "center" }}>
 						<Steps size="small" current={step}>

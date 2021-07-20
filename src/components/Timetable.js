@@ -7,6 +7,7 @@ export default function Timetable(props) {
     const { timetable } = props;
     const timeslots = timetable.timetable;
     const scores = timetable.scores;
+    const classes = timetable.classes;
 
     const timeColors = {
         'Early': 'gold',
@@ -31,6 +32,9 @@ export default function Timetable(props) {
                 showArrow={false}
             >
                 <TimetableCalendar timeslots={timeslots} />
+                {classes.map((classInfo, index) => (
+                    <Tag style={{ marginTop: 15 }} key={index} color="default">{classInfo.courseCode} - {classInfo.kind}: {classInfo.code}</Tag>
+                ))}
             </Panel>
         </Collapse >
     )
