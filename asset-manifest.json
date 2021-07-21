@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/classio-react/static/css/main.350d136c.chunk.css",
-    "main.js": "/classio-react/static/js/main.f4e60803.chunk.js",
-    "main.js.map": "/classio-react/static/js/main.f4e60803.chunk.js.map",
-    "runtime-main.js": "/classio-react/static/js/runtime-main.4e4aa284.js",
-    "runtime-main.js.map": "/classio-react/static/js/runtime-main.4e4aa284.js.map",
+    "main.css": "/classio-react/static/css/main.22c64d77.chunk.css",
+    "main.js": "/classio-react/static/js/main.a8e9ccd5.chunk.js",
+    "main.js.map": "/classio-react/static/js/main.a8e9ccd5.chunk.js.map",
+    "runtime-main.js": "/classio-react/static/js/runtime-main.fee804e3.js",
+    "runtime-main.js.map": "/classio-react/static/js/runtime-main.fee804e3.js.map",
     "static/css/2.3089e125.chunk.css": "/classio-react/static/css/2.3089e125.chunk.css",
-    "static/js/2.11877abe.chunk.js": "/classio-react/static/js/2.11877abe.chunk.js",
-    "static/js/2.11877abe.chunk.js.map": "/classio-react/static/js/2.11877abe.chunk.js.map",
-    "static/js/3.e9e7370c.chunk.js": "/classio-react/static/js/3.e9e7370c.chunk.js",
-    "static/js/3.e9e7370c.chunk.js.map": "/classio-react/static/js/3.e9e7370c.chunk.js.map",
+    "static/js/2.6baf3800.chunk.js": "/classio-react/static/js/2.6baf3800.chunk.js",
+    "static/js/2.6baf3800.chunk.js.map": "/classio-react/static/js/2.6baf3800.chunk.js.map",
+    "static/js/3.ff6e1ace.chunk.js": "/classio-react/static/js/3.ff6e1ace.chunk.js",
+    "static/js/3.ff6e1ace.chunk.js.map": "/classio-react/static/js/3.ff6e1ace.chunk.js.map",
     "index.html": "/classio-react/index.html",
     "static/css/2.3089e125.chunk.css.map": "/classio-react/static/css/2.3089e125.chunk.css.map",
-    "static/css/main.350d136c.chunk.css.map": "/classio-react/static/css/main.350d136c.chunk.css.map",
-    "static/js/2.11877abe.chunk.js.LICENSE.txt": "/classio-react/static/js/2.11877abe.chunk.js.LICENSE.txt"
+    "static/css/main.22c64d77.chunk.css.map": "/classio-react/static/css/main.22c64d77.chunk.css.map",
+    "static/js/2.6baf3800.chunk.js.LICENSE.txt": "/classio-react/static/js/2.6baf3800.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.4e4aa284.js",
+    "static/js/runtime-main.fee804e3.js",
     "static/css/2.3089e125.chunk.css",
-    "static/js/2.11877abe.chunk.js",
-    "static/css/main.350d136c.chunk.css",
-    "static/js/main.f4e60803.chunk.js"
+    "static/js/2.6baf3800.chunk.js",
+    "static/css/main.22c64d77.chunk.css",
+    "static/js/main.a8e9ccd5.chunk.js"
   ]
 }
