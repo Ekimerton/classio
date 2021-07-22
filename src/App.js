@@ -16,9 +16,8 @@ const { Step } = Steps;
 const { Option } = Select;
 
 function scoreFormatter(value) {
-	return `Meals: ${(10 - value)}/10 - Time: ${value}/10`;
+	return `Meals - ${(10 - value)} : Time - ${value}`;
 }
-
 
 function App() {
 	const [autocompleteOptions, setAutoCompleteOptions] = useState([]);
@@ -123,6 +122,9 @@ function App() {
 							<Select defaultValue="2021 Fall" size="large" style={{ flex: 0.3, marginRight: 10 }} onChange={newSemester => handleSelectSemester(newSemester)}>
 								<Option value="2021 Fall">Fall 2021</Option>
 								<Option value="2021 Winter">Winter 2021</Option>
+								<Option value="2020 Fall">Fall 2020</Option>
+								<Option value="2020 Winter">Winter 2020</Option>
+								<Option value="2019 Fall">Fall 2019</Option>
 							</Select>
 							<AutoComplete
 								allowClear
