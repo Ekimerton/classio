@@ -31,6 +31,8 @@ function App() {
 	const [timetables, setTimetables] = useState([]);
 
 	const [settingsEnabled, setSettingsEnabled] = useState(false);
+	const [lunchTime, setLunchTime] = useState([]);
+	const [dinnerTime, setDinnerTime] = useState([]);
 	const [scoreRatio, setScoreRatio] = useState(6);
 	const preColorCls = scoreRatio >= 5 ? '' : 'icon-wrapper-active';
 	const nextColorCls = scoreRatio >= 5 ? 'icon-wrapper-active' : '';
@@ -120,11 +122,10 @@ function App() {
 					<div className="App-section">
 						<div style={{ flex: 1, flexDirection: "row", justifyContent: 'space-around', alignItems: 'center', marginBottom: 20, display: "flex" }}>
 							<Select defaultValue="2021 Fall" size="large" style={{ flex: 0.3, marginRight: 10 }} onChange={newSemester => handleSelectSemester(newSemester)}>
+								<Option value="2022 Winter">Winter 2022</Option>
 								<Option value="2021 Fall">Fall 2021</Option>
 								<Option value="2021 Winter">Winter 2021</Option>
 								<Option value="2020 Fall">Fall 2020</Option>
-								<Option value="2020 Winter">Winter 2020</Option>
-								<Option value="2019 Fall">Fall 2019</Option>
 							</Select>
 							<AutoComplete
 								allowClear
