@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Card, Typography, Popover, message } from 'antd';
 const { Meta } = Card;
-const { Text, Paragraph } = Typography;
+const { Text } = Typography;
 
 export default function ClassCard(props) {
     const [loading, setLoading] = useState(true);
@@ -37,6 +37,7 @@ export default function ClassCard(props) {
         }
         setLoading(true);
         loadInfo();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [code, semester]);
 
     return (

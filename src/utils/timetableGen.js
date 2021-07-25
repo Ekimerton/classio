@@ -24,7 +24,7 @@ export const cartesianProduct = (sets, n = 0, result = [], current = []) => {
 
 
 const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr'];
-// Flattens timeslots and checks for any conflicts
+// Flattens timeslots and checks for any timeslot conflicts
 export const generateTimetables = (combinations) => {
     var timetables = [];
     for (const combination of combinations) {
@@ -50,7 +50,6 @@ export const generateTimetables = (combinations) => {
 export const generateScores = (timetables, lunchTime, dinnerTime, scoreRatio) => {
     const lunchTimeslot = { start_time: lunchTime[0].format('hh:mm'), end_time: lunchTime[1].format('hh:mm') };
     const dinnerTimeslot = { start_time: dinnerTime[0].format('hh:mm'), end_time: dinnerTime[1].format('hh:mm') };
-    console.log(lunchTimeslot);
     const mealRatio = 2 * ((10 - scoreRatio) / 10);
     const timeRatio = 2 * (scoreRatio / 10);
     return timetables.map((timetable) => {
@@ -68,6 +67,10 @@ export const generateScores = (timetables, lunchTime, dinnerTime, scoreRatio) =>
             scores
         }
     })
+}
+
+export const checkCourseConflict = (courses) => {
+
 }
 
 const validateDay = (day) => {
