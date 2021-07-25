@@ -47,18 +47,21 @@ export const generateTimetables = (combinations) => {
     return timetables;
 };
 
-const lunchTime = { start_time: "11:30", end_time: "12:30" };
-const dinnerTime = { start_time: "18:30", end_time: "19:30" };
-export const generateScores = (timetables) => {
+export const generateScores = (timetables, lunchTime, dinnerTime, scoreRatio) => {
+    const lunchTimeslot = { start_time: lunchTime[0].format('hh:mm'), end_time: lunchTime[1].format('hh:mm') };
+    const dinnerTimeslot = { start_time: dinnerTime[0].format('hh:mm'), end_time: dinnerTime[1].format('hh:mm') };
+    console.log(lunchTimeslot);
+    const mealRatio = 2 * ((10 - scoreRatio) / 10);
+    const timeRatio = 2 * (scoreRatio / 10);
     return timetables.map((timetable) => {
         const scores = { total: 0, lunch: 0, dinner: 0, offTime: 0, type: "late" }
         for (const day of Object.values(timetable['days'])) {
             scores['offTime'] += calculateOfftime(day);
-            scores['lunch'] += checkAvailability(day, lunchTime) ? 1 : 0;
-            scores['dinner'] += checkAvailability(day, dinnerTime) ? 1 : 0;
+            scores['lunch'] += checkAvailability(day, lunchTimeslot) ? 1 : 0;
+            scores['dinner'] += checkAvailability(day, dinnerTimeslot) ? 1 : 0;
         }
         scores['type'] = calculateTimeType(timetable['days']);
-        scores['total'] = 10 - (5 - scores['lunch']) - (5 - scores['dinner']) - Math.round(scores['offTime'])
+        scores['total'] = 10 - (5 - scores['lunch']) * mealRatio - (5 - scores['dinner']) * mealRatio - Math.round(scores['offTime'] * timeRatio);
         return {
             classes: timetable['classes'],
             timetable: timetable['days'],

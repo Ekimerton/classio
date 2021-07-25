@@ -8,6 +8,7 @@ import ClassCard from './components/ClassCard';
 import Timetable from './components/Timetable';
 import TitleCard from './components/TitleCard';
 import _ from 'lodash';
+import moment from 'moment';
 import { generateSets, cartesianProduct, generateTimetables, generateScores } from './utils/timetableGen';
 
 const { Paragraph, Title } = Typography;
@@ -31,8 +32,8 @@ function App() {
 	const [timetables, setTimetables] = useState([]);
 
 	const [settingsEnabled, setSettingsEnabled] = useState(false);
-	const [lunchTime, setLunchTime] = useState([]);
-	const [dinnerTime, setDinnerTime] = useState([]);
+	const [lunchTime, setLunchTime] = useState([moment('11:30', 'HH:mm'), moment('12:30', 'HH:mm')]);
+	const [dinnerTime, setDinnerTime] = useState([moment('18:30', 'HH:mm'), moment('19:30', 'HH:mm')]);
 	const [scoreRatio, setScoreRatio] = useState(6);
 	const preColorCls = scoreRatio >= 5 ? '' : 'icon-wrapper-active';
 	const nextColorCls = scoreRatio >= 5 ? 'icon-wrapper-active' : '';
@@ -45,18 +46,22 @@ function App() {
 
 	useEffect(() => {
 		const loadAutocomplete = async () => {
-			const res = await axios.get(
-				'https://classio-api.herokuapp.com/course',
-				{ params: { semester: semester } }
-			);
-			const course_codes = res.data.course_codes;
-			const course_options = [];
-			course_codes.forEach(course_code => {
-				course_options.push({ 'value': course_code })
-			})
-
-			setAutoCompleteOptions(course_options)
-			setLoading(false);
+			try {
+				const res = await axios.get(
+					'https://classio-api.herokuapp.com/course',
+					{ params: { semester: semester } }
+				);
+				const course_codes = res.data.course_codes;
+				const course_options = [];
+				course_codes.forEach(course_code => {
+					course_options.push({ 'value': course_code })
+				})
+				setAutoCompleteOptions(course_options)
+				setLoading(false);
+			} catch (error) {
+				message.error("Unable to fetch classes. (try refreshing)");
+				setLoading(false);
+			}
 		}
 		setLoading(true);
 		loadAutocomplete();
@@ -101,7 +106,7 @@ function App() {
 		const products = cartesianProduct(sets);
 		const timetables = generateTimetables(products);
 		setStep(2);
-		const scoredTimetables = generateScores(timetables);
+		const scoredTimetables = generateScores(timetables, lunchTime, dinnerTime, scoreRatio);
 		const sortedTimetables = _.sortBy(scoredTimetables, timetable => timetable.scores.total).reverse()
 		if (sortedTimetables.length === 0) {
 			message.error("Unable to generate timetables due to a time conflict!");
@@ -160,15 +165,35 @@ function App() {
 
 						{settingsEnabled &&
 							<div style={{ marginBottom: 20 }}>
-								<Divider plain>Advanced Options (NOT WORKING YET)</Divider>
+								<Divider plain>Advanced Options</Divider>
 								<Row gutter={[10, 10]}>
 									<Col flex={1}>
 										<Title level={5}>Lunch Time</Title>
-										<RangePicker format="h:mm a" minuteStep={15} size="large" picker="time" style={{ width: "100%" }} />
+										<RangePicker
+											format="hh:mm"
+											minuteStep={15}
+											allowClear={false}
+											size="large"
+											picker="time"
+											showNow
+											value={lunchTime}
+											style={{ width: "100%" }}
+											onChange={(val) => { setLunchTime(val) }}
+										/>
 									</Col>
 									<Col flex={1}>
 										<Title level={5}>Dinner Time</Title>
-										<RangePicker minuteStep={15} format="h:mm a" size="large" picker="time" style={{ width: "100%" }} onChange={(val) => { console.log(val) }} />
+										<RangePicker
+											minuteStep={15}
+											allowClear={false}
+											format="hh:mm"
+											size="large"
+											picker="time"
+											style={{ width: "100%" }}
+											value={dinnerTime}
+											showNow
+											onChange={(val) => { setDinnerTime(val) }}
+										/>
 									</Col>
 								</Row>
 								<div style={{ marginTop: 10 }}>

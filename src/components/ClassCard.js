@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Card, Typography, Popover } from 'antd';
+import { Card, Typography, Popover, message } from 'antd';
 const { Meta } = Card;
 const { Text, Paragraph } = Typography;
 
@@ -20,15 +20,20 @@ export default function ClassCard(props) {
 
     useEffect(() => {
         const loadInfo = async () => {
-            const res = await axios.get(
-                `https://classio-api.herokuapp.com/course/${code}`,
-                { params: { semester: semester } }
-            );
-            setName(res.data.course_info.name);
-            const timeslots = _.flatMap(res.data.course_info.sections, 'timeslots')
-            setTimeslotCount(timeslots.length);
-            onAdd(res.data.course_info);
-            setLoading(false);
+            try {
+                const res = await axios.get(
+                    `https://classio-api.herokuapp.com/course/${code}`,
+                    { params: { semester: semester } }
+                );
+                setName(res.data.course_info.name);
+                const timeslots = _.flatMap(res.data.course_info.sections, 'timeslots')
+                setTimeslotCount(timeslots.length);
+                onAdd(res.data.course_info);
+                setLoading(false);
+            } catch (e) {
+                message.error("Unable to fetch class info. (try refreshing)");
+                setLoading(false);
+            }
         }
         setLoading(true);
         loadInfo();

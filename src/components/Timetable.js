@@ -21,7 +21,7 @@ export default function Timetable(props) {
                 header={
                     <div>
                         <Tag color={timeColors[scores.type]} style={{ margin: 5 }}>{scores.type}</Tag>
-                        <Tag color="blue" style={{ margin: 5 }}>Score: {scores.total}/10</Tag>
+                        <Tag color="blue" style={{ margin: 5 }}>Score: {scores.total.toFixed(1)}/10</Tag>
                         <Tag color="blue" style={{ margin: 5 }}>Time wasted: {scores.offTime}h</Tag>
                         <Tag color="blue" style={{ margin: 5 }}>Lunches: {scores.lunch}/5</Tag>
                         <Tag color="blue" style={{ margin: 5 }}>Dinners: {scores.dinner}/5</Tag>
