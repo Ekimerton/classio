@@ -1,7 +1,7 @@
 {
-  "name": "classio-react",
+  "name": "classio",
   "version": "0.1.0",
-  "homepage": "http://ekimerton.github.io/classio-react/",
+  "homepage": "http://ekimerton.github.io/classio/",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
