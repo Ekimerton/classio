@@ -2,6 +2,20 @@
 import _ from 'lodash';
 import moment from 'moment';
 
+// Worker for generating the timetables
+onmessage = (event) => {
+    console.log(event);
+    const { courseInfos, lunchTimeslot, dinnerTimeslot, scoreRatio } = event.data;
+    postMessage({ type: 'update', step: 0, results: null });
+    const sets = generateSets(courseInfos);
+    const products = cartesianProduct(sets);
+    postMessage({ type: 'update', step: 1, results: null });
+    const timetables = generateTimetables(products);
+    postMessage({ type: 'update', step: 2, results: null });
+    const scoredTimetables = generateScores(timetables, lunchTimeslot, dinnerTimeslot, scoreRatio);
+    postMessage({ type: 'final', step: 3, results: scoredTimetables });
+}
+
 var isArrayEqual = function (x, y) {
     return _(x).differenceWith(y, _.isEqual).isEmpty();
 };
@@ -71,9 +85,7 @@ export const generateTimetables = (combinations) => {
     return timetables;
 };
 
-export const generateScores = (timetables, lunchTime, dinnerTime, scoreRatio) => {
-    const lunchTimeslot = { start_time: lunchTime[0].format('hh:mm'), end_time: lunchTime[1].format('hh:mm') };
-    const dinnerTimeslot = { start_time: dinnerTime[0].format('hh:mm'), end_time: dinnerTime[1].format('hh:mm') };
+export const generateScores = (timetables, lunchTimeslot, dinnerTimeslot, scoreRatio) => {
     const mealRatio = 2 * ((10 - scoreRatio) / 10);
     const timeRatio = 2 * (scoreRatio / 10);
     return timetables.map((timetable) => {
@@ -91,10 +103,6 @@ export const generateScores = (timetables, lunchTime, dinnerTime, scoreRatio) =>
             scores
         }
     })
-}
-
-export const checkCourseConflict = (courses) => {
-
 }
 
 const validateDay = (day) => {

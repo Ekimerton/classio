@@ -9,7 +9,8 @@ import Timetable from './components/Timetable';
 import TitleCard from './components/TitleCard';
 import _ from 'lodash';
 import moment from 'moment';
-import { generateSets, cartesianProduct, generateTimetables, generateScores } from './utils/timetableGen';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import Worker from "worker-loader!./utils/timetableGen.js";
 
 const { Paragraph, Title } = Typography;
 const { RangePicker } = DatePicker;
@@ -99,23 +100,26 @@ function App() {
 	}
 
 	const handleGenerate = () => {
-		// const worker = new window.Worker("src/utils/timetableGen.js");
+		const worker = new Worker();
+		const lunchTimeslot = { start_time: lunchTime[0].format('hh:mm'), end_time: lunchTime[1].format('hh:mm') };
+		const dinnerTimeslot = { start_time: dinnerTime[0].format('hh:mm'), end_time: dinnerTime[1].format('hh:mm') };
+		worker.postMessage({ courseInfos, lunchTimeslot, dinnerTimeslot, scoreRatio });
 		setTimetables([]);
-		setStep(0);
-		const sets = generateSets(courseInfos);
-		setStep(1);
-		const products = cartesianProduct(sets);
-		const timetables = generateTimetables(products);
-		setStep(2);
-		const scoredTimetables = generateScores(timetables, lunchTime, dinnerTime, scoreRatio);
-		const sortedTimetables = _.sortBy(scoredTimetables, timetable => timetable.scores.total).reverse()
-		if (sortedTimetables.length === 0) {
-			message.error("Unable to generate timetables due to a time conflict!");
-		} else {
-			message.success(`Finished generating ${sortedTimetables.length} timetable(s)!`)
+		worker.onerror = (e) => { message.error(e.message) };
+		worker.onmessage = (e) => {
+			const { type, step, results } = e.data;
+			setStep(step);
+			if (type === "final") {
+				const sortedTimetables = _.sortBy(results, timetable => timetable.scores.total).reverse()
+				if (sortedTimetables.length === 0) {
+					message.error("Unable to generate timetables due to a time conflict!");
+				} else {
+					message.success(`Finished generating ${results.length} timetable(s)!`)
+				}
+				setTimetables(sortedTimetables);
+				worker.terminate();
+			}
 		}
-		setTimetables(sortedTimetables);
-		setStep(3);
 	}
 
 	return (
@@ -235,6 +239,7 @@ function App() {
 									console.log(page);
 								},
 								pageSize: 10,
+								pageSizeOptions: [10]
 							}}
 							style={{ padding: 0 }}
 							dataSource={timetables}
