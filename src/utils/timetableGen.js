@@ -2,13 +2,37 @@
 import _ from 'lodash';
 import moment from 'moment';
 
+var isArrayEqual = function (x, y) {
+    return _(x).differenceWith(y, _.isEqual).isEmpty();
+};
+
+const filterSectionGroups = (sectionGroups) => {
+    for (const [sectionType, sectionGroup] of Object.entries(sectionGroups)) {
+        const filteredSections = [];
+        var lastTimeslot = sectionGroup[0];
+        for (const timeslot of sectionGroup.slice(1)) {
+            const currTimeslot = timeslot;
+            if (isArrayEqual(currTimeslot.timeslots, lastTimeslot.timeslots)) {
+                lastTimeslot.code += ", " + currTimeslot.code;
+            } else {
+                filteredSections.push(lastTimeslot);
+                lastTimeslot = currTimeslot;
+            }
+        }
+        filteredSections.push(lastTimeslot);
+        sectionGroups[sectionType] = filteredSections;
+    }
+    return sectionGroups;
+}
+
 // Groups sections of the same class and type into a single sets, returns all unique sets generated
 export const generateSets = (courses) => {
     var sets = [];
     for (const course of courses) {
         const sections = _.filter(course.sections, section => section.timeslots.length > 0);
         const sectionGroups = _.groupBy(sections, section => section.kind);
-        const courseSets = Object.values(sectionGroups);
+        const filteredSectionGroups = filterSectionGroups(sectionGroups);
+        const courseSets = Object.values(filteredSectionGroups);
         sets = sets.concat(courseSets);
     }
     return sets;

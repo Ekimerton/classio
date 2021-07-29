@@ -1,6 +1,6 @@
 import './App.css';
 import 'antd/dist/antd.css';
-import { AutoComplete, Input, Typography, Button, Select, Steps, List, Divider, message, DatePicker, Row, Col, Slider } from 'antd';
+import { AutoComplete, Input, Typography, Button, Select, Steps, List, Divider, message, DatePicker, Row, Col, Slider, Alert } from 'antd';
 import { LoadingOutlined, SettingOutlined, ClockCircleOutlined, CoffeeOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -99,6 +99,7 @@ function App() {
 	}
 
 	const handleGenerate = () => {
+		// const worker = new window.Worker("src/utils/timetableGen.js");
 		setTimetables([]);
 		setStep(0);
 		const sets = generateSets(courseInfos);
@@ -121,6 +122,14 @@ function App() {
 		<div className="App">
 			<header className="App-header">
 				<div style={{ maxWidth: "100%", width: 800, padding: 10 }}>
+					<Alert
+						style={{ borderRadius: 10, padding: 20, margin: 5 }}
+						message="Update!"
+						description="Bundling timeslots has increased performance significantly! A big thanks to u/queensuthrowaway12."
+						type="info"
+						showIcon
+						closable
+					/>
 					<div className="App-section" style={{ fontSize: 14 }}>
 						<TitleCard />
 					</div>
