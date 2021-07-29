@@ -1,25 +1,28 @@
 {
   "files": {
     "main.css": "/classio/static/css/main.e3fb0c1e.chunk.css",
-    "main.js": "/classio/static/js/main.b8e95fc7.chunk.js",
-    "main.js.map": "/classio/static/js/main.b8e95fc7.chunk.js.map",
-    "runtime-main.js": "/classio/static/js/runtime-main.5b523013.js",
-    "runtime-main.js.map": "/classio/static/js/runtime-main.5b523013.js.map",
+    "main.js": "/classio/static/js/main.b80c0fe0.chunk.js",
+    "main.js.map": "/classio/static/js/main.b80c0fe0.chunk.js.map",
+    "runtime-main.js": "/classio/static/js/runtime-main.b7f0e207.js",
+    "runtime-main.js.map": "/classio/static/js/runtime-main.b7f0e207.js.map",
     "static/css/2.3089e125.chunk.css": "/classio/static/css/2.3089e125.chunk.css",
-    "static/js/2.72e761e4.chunk.js": "/classio/static/js/2.72e761e4.chunk.js",
-    "static/js/2.72e761e4.chunk.js.map": "/classio/static/js/2.72e761e4.chunk.js.map",
-    "static/js/3.a92cb89e.chunk.js": "/classio/static/js/3.a92cb89e.chunk.js",
-    "static/js/3.a92cb89e.chunk.js.map": "/classio/static/js/3.a92cb89e.chunk.js.map",
+    "static/js/2.4eb9fc46.chunk.js": "/classio/static/js/2.4eb9fc46.chunk.js",
+    "static/js/2.4eb9fc46.chunk.js.map": "/classio/static/js/2.4eb9fc46.chunk.js.map",
+    "static/js/3.5f53b156.chunk.js": "/classio/static/js/3.5f53b156.chunk.js",
+    "static/js/3.5f53b156.chunk.js.map": "/classio/static/js/3.5f53b156.chunk.js.map",
     "index.html": "/classio/index.html",
     "static/css/2.3089e125.chunk.css.map": "/classio/static/css/2.3089e125.chunk.css.map",
     "static/css/main.e3fb0c1e.chunk.css.map": "/classio/static/css/main.e3fb0c1e.chunk.css.map",
-    "static/js/2.72e761e4.chunk.js.LICENSE.txt": "/classio/static/js/2.72e761e4.chunk.js.LICENSE.txt"
+    "static/js/2.4eb9fc46.chunk.js.LICENSE.txt": "/classio/static/js/2.4eb9fc46.chunk.js.LICENSE.txt",
+    "static/js/timetableGen.08014b0a.worker.js": "/classio/static/js/timetableGen.08014b0a.worker.js",
+    "static/js/timetableGen.08014b0a.worker.js.LICENSE.txt": "/classio/static/js/timetableGen.08014b0a.worker.js.LICENSE.txt",
+    "static/js/timetableGen.08014b0a.worker.js.map": "/classio/static/js/timetableGen.08014b0a.worker.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.5b523013.js",
+    "static/js/runtime-main.b7f0e207.js",
     "static/css/2.3089e125.chunk.css",
-    "static/js/2.72e761e4.chunk.js",
+    "static/js/2.4eb9fc46.chunk.js",
     "static/css/main.e3fb0c1e.chunk.css",
-    "static/js/main.b8e95fc7.chunk.js"
+    "static/js/main.b80c0fe0.chunk.js"
   ]
 }
