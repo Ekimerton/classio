@@ -126,17 +126,19 @@ function App() {
 		<div className="App">
 			<header className="App-header">
 				<div style={{ maxWidth: "100%", width: 800, padding: 10 }}>
-					<Alert
-						style={{ borderRadius: 10, padding: 20, margin: 5 }}
-						message="Update!"
-						description="Bundling timeslots has increased performance significantly! A big thanks to u/queensuthrowaway12."
-						type="info"
-						showIcon
-						closable
-					/>
 					<div className="App-section" style={{ fontSize: 14 }}>
 						<TitleCard />
 					</div>
+					<Alert
+						style={{ borderRadius: 10, padding: 20, margin: 5 }}
+						message="Tinyshed: Airbnb for storage"
+						description={<p>Looking for affordable storage near campus? Tinyshed is a student community storage app that can help you find storage nearby for cheaper. <a href="https://www.tinyshed.co/" target="_blank" rel="noreferrer">Learn more</a></p>}
+
+						showIcon
+						icon={<img style={{ height: 90 }} src="https://scontent.fyto1-2.fna.fbcdn.net/v/t1.6435-9/122796654_111174037449466_8097817147638427963_n.png?_nc_cat=107&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=VjXOdPZaJUEAX_IBNTp&tn=3b77SZAfm_W_AbCQ&_nc_ht=scontent.fyto1-2.fna&oh=62920a461d8b5051ca90185e09a73c76&oe=61282AD7" />}
+						type="info"
+						closable
+					/>
 					<div className="App-section">
 						<div style={{ flex: 1, flexDirection: "row", justifyContent: 'space-around', alignItems: 'center', marginBottom: 20, display: "flex" }}>
 							<Select defaultValue="2021 Fall" size="large" style={{ flex: 0.3, marginRight: 10 }} onChange={newSemester => handleSelectSemester(newSemester)}>
