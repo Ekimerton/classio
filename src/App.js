@@ -131,7 +131,7 @@ function App() {
 					</div>
 					<Alert
 						style={{ borderRadius: 10, padding: 20, margin: 5 }}
-						message="Tinyshed: Airbnb for storage"
+						message={<a href="https://www.tinyshed.co/" target="_blank" rel="noreferrer">Tinyshed: Airbnb for storage</a>}
 						description={<p>Looking for affordable storage near campus? Tinyshed is a student community storage app that can help you find storage nearby for cheaper. <a href="https://www.tinyshed.co/" target="_blank" rel="noreferrer">Learn more</a></p>}
 
 						showIcon
